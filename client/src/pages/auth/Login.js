@@ -10,12 +10,25 @@ import {
   UserAddOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+
+export const createOrUpdateUser = async (authtoken) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/create-or-update-user`,
+    {},
+    {
+      headers: {
+        authtoken: authtoken,
+      },
+    }
+  );
+};
 
 //component start
 const Login = ({ history }) => {
   //variable declarations
   const [email, setEmail] = useState("rameshrahul26@gmail.com");
-  const [password, setPassword] = useState("rahulramesh");
+  const [password, setPassword] = useState("123456");
   const [loading, setLoading] = useState(false);
   let dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
@@ -36,14 +49,20 @@ const Login = ({ history }) => {
       console.log("result=>", result);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
-      dispatch({
-        type: "LOGGED_IN_USER",
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
-      history.push("/");
+
+      createOrUpdateUser(idTokenResult.token)
+        .then((res) => {
+          console.log("create or update respone", res);
+        })
+        .catch();
+      // dispatch({
+      //   type: "LOGGED_IN_USER",
+      //   payload: {
+      //     email: user.email,
+      //     token: idTokenResult.token,
+      //   },
+      // });
+      // history.push("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message);
