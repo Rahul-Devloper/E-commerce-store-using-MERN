@@ -27,6 +27,15 @@ const Login = ({ history }) => {
     }
   }, [user]);
 
+  //redirects based on role
+  const roleBasedRedirect = (res) => {
+    if (res.data.role === "admin") {
+      history.push("/admin/dashboard");
+    } else {
+      history.push("/user/history");
+    }
+  };
+
   //event handlers
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,9 +59,10 @@ const Login = ({ history }) => {
               _id: res.data._id,
             },
           });
+          roleBasedRedirect(res);
         })
-        .catch();
-      history.push("/");
+        .catch((err) => console.log("error=>", err));
+      // history.push("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -78,9 +88,10 @@ const Login = ({ history }) => {
                 _id: res.data._id,
               },
             });
+            roleBasedRedirect(res);
           })
           .catch((err) => console.error(err));
-        history.push("/");
+        // history.push("/");
       })
       .catch((error) => {
         console.log(error);
