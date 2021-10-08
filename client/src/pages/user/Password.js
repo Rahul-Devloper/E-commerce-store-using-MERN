@@ -6,27 +6,24 @@ import { toast } from "react-toastify";
 
 const Password = () => {
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState("false");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(password);
+    setLoading(true);
+
+    await auth.currentUser
+      .updatePassword(password)
+      .then(() => {
+        setLoading(false);
+        toast.success("Password updated successfully");
+      })
+      .catch((error) => {
+        setLoading(false);
+        toast.error(error.message);
+      });
   };
 
-  const passwordUpdateForm = () => (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label>Your Password</label>
-        <input
-          type="password"
-          className="form-control"
-          placeholder="Enter new password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button className="btn btn-primary">Submit</button>
-      </div>
-    </form>
-  );
   return (
     <div className="container-fluid">
       <div className="row">
@@ -34,8 +31,31 @@ const Password = () => {
           <UserNav />
         </div>
         <div className="col">
-          <h3>Password Update</h3>
-          {passwordUpdateForm()}
+          {loading ? (
+            <h4 className="text-danger">Loading...</h4>
+          ) : (
+            <h4>Password Update</h4>
+          )}
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Your Password</label>
+              <input
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                className="form-control"
+                placeholder="Enter your new password"
+                disabled={loading}
+                value={password}
+              />
+              <button
+                disabled={!password || loading}
+                className="btn btn-primary"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+          ;
         </div>
       </div>
     </div>
