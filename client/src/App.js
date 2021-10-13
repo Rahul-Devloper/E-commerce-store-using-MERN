@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import CategoryCreate from "./pages/admin/category/CategoryCreate";
 import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
 import SubCategoryCreate from "./pages/admin/subCategory/SubCategoryCreate";
+import SubCategoryUpdate from "./pages/admin/subCategory/SubCategoryUpdate";
 
 //components
 import Header from "./components/nav/Header";
@@ -80,6 +81,11 @@ const App = () => {
           exact
           path="/admin/subCategory"
           component={SubCategoryCreate}
+        />
+        <AdminRoute
+          exact
+          path="/admin/subCategory/:slug"
+          component={SubCategoryUpdate}
         />
       </Switch>
     </>

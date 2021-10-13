@@ -24,11 +24,11 @@ exports.read = async (req, res) => {
   res.json(subCategory);
 };
 exports.update = async (req, res) => {
-  const { name } = req.body;
+  const { name, parent } = req.body;
   try {
     const updated = await SubCategory.findOneAndUpdate(
       { slug: req.params.slug },
-      { name: name, slug: slugify(name) },
+      { name: name, parent: parent, slug: slugify(name) },
       { new: true } //Is mandatory while updating an existing one
     );
     res.json(updated);
