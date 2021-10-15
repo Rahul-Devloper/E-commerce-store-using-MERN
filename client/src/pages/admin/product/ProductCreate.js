@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { createProduct } from "../../../functions/product";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
 //fetching categories from backend
-import { getCategories } from "../../../functions/category";
+import { getCategories, getCategorySubs } from "../../../functions/category";
 const initialState = {
   title: "",
   description: "",
@@ -25,6 +25,10 @@ const initialState = {
 
 const ProductCreate = () => {
   const [values, setValues] = useState(initialState);
+  const [subOptions, setSubOptions] = useState([]);
+  const [showSub, setShowSub] = useState(false);
+
+  //redux
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
@@ -59,6 +63,16 @@ const ProductCreate = () => {
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+
+  const handleCategoryChange = (e) => {
+    e.preventDefault();
+    console.log("clicked Category=>", e.target.value);
+    setValues({ ...values, category: e.target.value });
+    getCategorySubs(e.target.value).then((res) => {
+      console.log("subs belonging to parent id=>", res);
+      setSubOptions(res.data);
+    });
+  };
   return (
     <>
       <div className="container-fluid">
@@ -69,10 +83,15 @@ const ProductCreate = () => {
           <div className="col-md-10">
             <h4>Product Create</h4>
             <hr />
+            {JSON.stringify(values.subs)}
             <ProductCreateForm
               handleChange={handleChange}
               handleSubmit={handleSubmit}
               values={values}
+              handleCategoryChange={handleCategoryChange}
+              subOptions={subOptions}
+              showSub={showSub}
+              setValues={setValues}
             />
           </div>
         </div>

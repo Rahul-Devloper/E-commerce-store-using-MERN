@@ -30,8 +30,15 @@ export const updateCategory = async (slug, authtoken, category) => {
 };
 
 //Creating a single category
-export const createCategory = async (authtoken, category) => {
-  return await axios.post(`${process.env.REACT_APP_API}/category`, category, {
+export const createCategory = (authtoken, category) => {
+  return axios.post(`${process.env.REACT_APP_API}/category`, category, {
     headers: { authtoken },
   });
+};
+
+//geting subcategories based on Particular Parent Id
+export const getCategorySubs = async (_id) => {
+  return await axios.get(
+    `${process.env.REACT_APP_API}/category/subCategories/${_id}`
+  );
 };

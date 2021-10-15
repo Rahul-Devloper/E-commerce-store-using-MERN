@@ -20,6 +20,6 @@ exports.create = async (req, res) => {
 //getting all products
 exports.read = async (req, res) => {
   let products = await Product.find({});
-  res.json(products);
+  res(products);
   console.log(res);
 };

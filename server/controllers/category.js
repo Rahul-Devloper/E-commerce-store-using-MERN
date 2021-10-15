@@ -1,4 +1,5 @@
 const Category = require("../models/category");
+const SubCategory = require("../models/subCategory");
 const slugify = require("slugify");
 
 exports.create = async (req, res) => {
@@ -47,4 +48,15 @@ exports.remove = async (req, res) => {
   } catch (err) {
     res.status(400).send("Create Delete Failed");
   }
+};
+
+//Finding the subcategory that has the id of the parent category
+//Eg. if the selected category has an id of 2, then all subcategories
+//that has the key parent and value of the id 2, will be found
+//from the backend
+exports.getSubCategories = (req, res) => {
+  SubCategory.find({ parent: req.params._id }).exec((err, subCategories) => {
+    if (err) console.log(err);
+    res.json(subCategories);
+  });
 };
