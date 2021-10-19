@@ -67,11 +67,12 @@ const ProductCreate = () => {
   const handleCategoryChange = (e) => {
     e.preventDefault();
     console.log("clicked Category=>", e.target.value);
-    setValues({ ...values, category: e.target.value });
+    setValues({ ...values, subs: [], category: e.target.value });
     getCategorySubs(e.target.value).then((res) => {
       console.log("subs belonging to parent id=>", res);
       setSubOptions(res.data);
     });
+    setShowSub(true);
   };
   return (
     <>

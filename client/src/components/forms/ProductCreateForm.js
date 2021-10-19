@@ -128,20 +128,27 @@ const ProductCreateForm = ({
           </select>
         </div>
 
-        <div>
-          <label>Sub Categories</label>
-          <Select
-            mode="multiple"
-            allowClear
-            style={{ width: "100%" }}
-            placeholder="Please select"
-            value={subs}
-            onChange={(value) => setValues({ ...values, subs: value })}
-          >
-            <Option value="one">Option 1</Option>
-            <Option value="two">Option 2</Option>
-          </Select>
-        </div>
+        {/* The suboptions form will show only when showSub is true i.e only when category is selected */}
+        {showSub && (
+          <div>
+            <label>Sub Categories</label>
+            <Select
+              mode="multiple"
+              allowClear
+              style={{ width: "100%" }}
+              placeholder="Please select"
+              value={subs}
+              onChange={(value) => setValues({ ...values, subs: value })}
+            >
+              {subOptions.length &&
+                subOptions.map((subOption) => (
+                  <Option key={subOption._id} value={subOption._id}>
+                    {subOption.name}
+                  </Option>
+                ))}
+            </Select>
+          </div>
+        )}
 
         <button className="btn btn-outline-info my-2">Save</button>
       </form>
